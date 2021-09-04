@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+  <%-include ('../header.ejs')%>
+  <style>
+    body{
+      background-color: #495057;
+    }
+    div.left{
+      text-align: left;
+      width: 50%;
+      float: left;
+    }
+    div.right{
+      text-align: right;
+      width: 50%;
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include ('../sidebar.ejs')%>
+  <div class="container">
+    <div class="overflow-auto">
+      <div class="table-responsive">
+        <table class="table table-bordered" >
+          <form action="/board/create" method="POST">
+          <thead class ="table-light align-middle" align="center">
+            <th scope="col" width = "50%">제목</th>
+            <tr>
+              <td>
+                <input type="text" class="form-control" placeholder="제목" id="" name = "title">
+              </td>
+            </tr>
+            <th scope="col" width = "50%">내용</th>
+            <tr>
+              <td>
+                <input type="text" style="height:500px;" class="form-control" placeholder="내용" id="contents" name = "contents">
+              </td>
+            </tr>
+            <tr>
+              <td class = "gx-5" colspan="14" align="center">
+                <button type="submit" class="btn btn-success"><strong>공지 쓰기</strong></button>
+                </td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </form>
+    </div>
+</body>
+
+</html>

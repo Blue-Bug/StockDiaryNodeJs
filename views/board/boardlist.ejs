@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+  <%-include ('../header.ejs')%>
+  <style>
+    body{
+      background-color: #495057;
+    }
+    div.left{
+      text-align: left;
+      width: 50%;
+      float: left;
+    }
+    div.right{
+      text-align: right;
+      width: 50%;
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include ('../sidebar.ejs')%>
+  <div class="container">
+    <div class="overflow-auto">
+      <div class="table-responsive">
+        <% let index = 1;%>
+        <table class="table table-bordered" >
+          <thead class ="table-light align-middle" align="center">
+            <th scope="col">#</th>
+            <th scope="col" width = "50%">제목</th>
+            <th scope="col">생성 날짜</th>
+            <th scope="col">수정 날짜</th>
+          </thead>
+          <tbody class="text-white">
+            <% boards.forEach((it) => {%>
+              <tr>
+                <td align="center"><%= index++ %></td>                
+                <td align="center"><a class="text-white" href="/board?title=<%= it.title %>&created_at=<%= it.created_at %>""><%= it.title %></a></td>
+                <td align="center"><%= it.created_at %></td>
+                <td align="center"><%= it.updated_at %></td>
+              </tr>
+            <%});//end for%>
+          </tbody>   
+        </table>
+        <div class= left>
+          <strong class="text-white">총 <%= index - 1%>개</strong>
+        </div>
+        <div class= right>
+          <a href="/board/create" class="btn btn-success"><strong>공지 쓰기</strong></a>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

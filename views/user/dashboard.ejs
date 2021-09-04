@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%-include ('../header.ejs')%>
+    <style>
+      body{
+        background-color: #495057;
+      }
+    </style>
+  </head>
+  <body>
+    <%-include ('../sidebar.ejs')%>
+    <div class = "container text-white">
+      <div class ="page-header text-center">
+        <h1><svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>대시 보드</h1>
+      </div>
+      <br>
+      <div class = "row">
+        <div class = "col-sm-6">
+          <div class="well">
+            <h3><span class="fa fa-user"></span> 사용자 정보</h3>
+            <br>
+            <p>
+              <strong>쓴 일지 수 </strong>:<%= diarynum%> 개<br><br>
+              <strong>최근 접속 시간</strong>:<%= user.recent_activity %>
+            </p>
+          
+          </div>
+        </div>
+      </div>
+      <br>
+    </div>
+  </body>
+</html>

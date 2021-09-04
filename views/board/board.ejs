@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="kr">
+
+<head>
+  <%-include ('../header.ejs')%>
+  <style>
+    body{
+      background-color: #495057;
+    }
+    div.left{
+      text-align: left;
+      width: 50%;
+      float: left;
+    }
+    div.right{
+      text-align: right;
+      width: 50%;
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <%-include ('../sidebar.ejs')%>
+  <div class="container">
+    <div class="overflow-auto">
+      <div class="table-responsive">
+        <table class="table table-bordered" >
+          <thead class ="table-light align-middle" align="center">
+            <th scope="col" width = "50%">제목</th>
+            <form action="/board/delete" method="POST">
+            <tr>
+              <td>
+                <input style ="text-align:center;"  class="form-control" name = "title" readonly value="<%= board.title%>">
+              </td>
+            </tr>
+            <th scope="col" width = "50%">내용</th>
+            <tr>
+              <td>
+                <input class="form-control" style="height:500px; text-align:center;" readonly value="<%= board.contents%>">
+              </td>
+            </tr>
+            <tr>
+              <td class = "gx-5" colspan="14" align="center">
+                <input hidden name="created_at" value="<%= board.created_at%>">
+                <button type="submit" class="btn btn-success"><strong>공지 삭제</strong></button>
+                </td>
+              </form>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+</body>
+
+</html>
