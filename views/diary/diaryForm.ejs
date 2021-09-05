@@ -4,55 +4,90 @@
 <head>
   <%-include ('../header.ejs')%>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
-<script>
-//공통
-// 참고 출처 : https://redstapler.co/sheetjs-tutorial-create-xlsx/
-function s2ab(s) { 
-    var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
-    var view = new Uint8Array(buf);  //create uint8array as viewer
-    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
-    return buf;    
-}
-function exportExcel(){ 
-    // step 1. workbook 생성
-    var wb = XLSX.utils.book_new();
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+  <script>
+  //공통
+  // 참고 출처 : https://redstapler.co/sheetjs-tutorial-create-xlsx/
+  function s2ab(s) { 
+      var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+      var view = new Uint8Array(buf);  //create uint8array as viewer
+      for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+      return buf;    
+  }
+  function exportExcel(){ 
+      // step 1. workbook 생성
+      var wb = XLSX.utils.book_new();
 
-    // step 2. 시트 만들기 
-    var newWorksheet = excelHandler.getWorksheet();
-    
-    // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.  
-    XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+      // step 2. 시트 만들기 
+      var newWorksheet = excelHandler.getWorksheet();
+      
+      // step 3. workbook에 새로만든 워크시트에 이름을 주고 붙인다.  
+      XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
 
-    // step 4. 엑셀 파일 만들기 
-    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+      // step 4. 엑셀 파일 만들기 
+      var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
 
-    // step 5. 엑셀 파일 내보내기 
-    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
-}
-$(document).ready(function() { 
-    $("#excelFileExport").click(function(){
-        exportExcel();
+      // step 5. 엑셀 파일 내보내기 
+      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
+  }
+  $(document).ready(function() { 
+      $("#excelFileExport").click(function(){
+          exportExcel();
+      });
+      $("#btn-add-row").click(function() {
+        $("#tableData > tbody:last").append("<tr>"+
+        "<td>"+$("#item").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"item\" value=\""+$("#item").val() +"\"></td>" +
+        "<td>"+$("#bank").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"bank\" value=\""+$("#bank").val() +"\"></td>" +
+        "<td>"+$("#trade_category").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"trade_category\" value=\""+$("#trade_category").val() +"\"></td>" +
+        "<td>"+$("#buy_date").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"buy_date\" value=\""+$("#buy_date").val() +"\"></td>" +
+        "<td>"+$("#sell_date").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"sell_date\" value=\""+$("#sell_date").val() +"\"></td>" +
+        "<td>"+$("#holding_period").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"holding_period\" value=\""+$("#holding_period").val() +"\"></td>" +
+        "<td>"+$("#profit_loss").val()+"<input hidden  readonly type=\"text\" class=\"form-control\" name=\"profit_loss\" value=\""+$("#profit_loss").val() +"\"></td>" +
+        "<td>"+$("#profit_rate").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"profit_rate\" value=\""+$("#profit_rate").val() +"\"></td>" +
+        "<td>"+$("#transaction_price").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"transaction_price\" value=\""+$("#transaction_price").val() +"\"></td>" +
+        "<td>"+$("#transaction_volume").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"transaction_volume\" value=\""+$("#transaction_volume").val() +"\"></td>" +
+        "<td>"+$("#trading_cost").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"trading_cost\" value=\""+$("#trading_cost").val() +"\"></td>" +
+        "<td>"+$("#total_price").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"total_price\" value=\""+$("#total_price").val() +"\"></td>" +
+        "<td>"+$("#trading_reason").val()+"<input hidden readonly type=\"text\" class=\"form-control\" name=\"trading_reason\" value=\""+$("#trading_reason").val() +"\"></td>" +
+        "</tr>");
+        $("#item").val('');
+        $("#bank").val('');
+        $("#trade_category").val('');
+        $("#buy_date").val('');
+        $("#sell_date").val('');
+        $("#holding_period").val('');
+        $("#profit_loss").val('')
+        $("#profit_rate").val('')
+        $("#transaction_price").val('');
+        $("#transaction_volume").val('');
+        $("#trading_cost").val('');
+        $("#total_price").val('');
+        $("#trading_reason").val('');
     });
-});
-</script>
-<script>
-var excelHandler = {
-        getExcelFileName : function(){
-            return 'table-test.xlsx';
-        },
-        getSheetName : function(){
-            return 'Table Test Sheet';
-        },
-        getExcelData : function(){
-            return document.getElementById('tableData'); 
-        },
-        getWorksheet : function(){
-            return XLSX.utils.table_to_sheet(this.getExcelData());
-        }
-}
-</script>
+    $("#btn-delete-row").click(function() {
+      $("#tableData > tbody > tr:last").remove();
+    });
+  });
+ 
+  </script>
+  <script>
+  var now = new Date();
+  var excelHandler = {
+          getExcelFileName : function(){
+              return now +'diary.xlsx';
+          },
+          getSheetName : function(){
+              return 'StockDiary Sheet';
+          },
+          getExcelData : function(){
+              return document.getElementById('tableData'); 
+          },
+          getWorksheet : function(){
+              return XLSX.utils.table_to_sheet(this.getExcelData());
+          }
+  }
+  </script>
 </head>
 
 <body>
@@ -62,7 +97,6 @@ var excelHandler = {
       <form action="/diary/create" method="post">
       <table id = "tableData" class="table table-bordered" >
         <thead class ="table-light align-middle">
-          <th scope="col">#</th>
           <th scope="col">종목명</th>
           <th scope="col">증권사</th>
           <th scope="col">매매 구분</th>
@@ -77,50 +111,46 @@ var excelHandler = {
           <th scope="col">총 체결 금액</th>
           <th scope="col">매매 이유</th>
         </thead>
-        <tbody id = tb>
-          <% let index = 1%>
+        <tbody>
           <tr>
             <td>
-              <strong placeholder="#" id="row_num"><%=index++%></strong>
+              <input type="text" class="form-control" placeholder="종목명" id="item">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="종목명" id="item" name = "item">
+              <input type="text" class="form-control" placeholder="증권사" id="bank">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="증권사" id="bank" name = "bank">
+              <input type="text" class="form-control" placeholder="매매 구분" id="trade_category">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="매매 구분" id="trade_category" name = "trade_category">
+              <input type="text" class="form-control" placeholder="매수 일자" id="buy_date">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="매수 일자" id="buy_date" name = "buy_date">
+              <input type="text" class="form-control" placeholder="매도 일자" id="sell_date">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="매도 일자" id="sell_date" name = "sell_date">
+              <input type="text" class="form-control" placeholder="보유 기간" id="holding_period">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="보유 기간" id="holding_period" name = "holding_period">
+              <input type="text" class="form-control" placeholder="손익" id="profit_loss">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="손익" id="profit_loss"  name = "profit_loss">
+              <input type="text" class="form-control" placeholder="수익률" id="profit_rate">
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="수익률" id="profit_rate" name = "profit_rate">
+              <input type="text" class="form-control" placeholder="체결 단가" id="transaction_price" >
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="체결 단가" id="transaction_price" name = "transaction_price">
+              <input type="text" class="form-control" placeholder="체결 수량" id="transaction_volume" >
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="체결 수량" id="transaction_volume" name = "transaction_volume">
+              <input type="text" class="form-control" placeholder="매매 비용" id="trading_cost" >
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="매매 비용" id="trading_cost" name = "trading_cost">
+              <input type="text" class="form-control" placeholder="총 체결 금액" id="total_price" >
             </td>
             <td>
-              <input type="text" class="form-control" placeholder="총 체결 금액" id="total_price" name = "total_price">
-            </td>
-            <td>
-              <input type="text" class="form-control" placeholder="매매 이유" id="trading_reason" name = "trading_reason">
+              <input type="text" class="form-control" placeholder="매매 이유" id="trading_reason" >
             </td>
 
             
@@ -129,8 +159,8 @@ var excelHandler = {
         <tfoot>
           <td class = "gx-5" colspan="14" align="center">
            <div class="btn-group me-2" role="group" aria-label="First group">
-             <button class="btn btn-success">+</button>
-             <button type="submit" class="btn btn-danger" disabled>-</button>
+             <button type="button" id="btn-add-row" class="btn btn-success">추가</button>
+             <button type="button" id="btn-delete-row" class="btn btn-danger">삭제</button>
            </div>
            <div class="btn-group" role="group">
              <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">저장하기</button>
