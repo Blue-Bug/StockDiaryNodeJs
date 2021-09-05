@@ -6,8 +6,6 @@ moment.locale('ko');
 Schema.createSchema = function (mongoose) {
   //스키마 정의
   let BoardSchema = mongoose.Schema({
-    //unique 속성을 사용하면 자동으로 index 생성
-    //diary 필드는 배열임
     title : {type : String, required: true }
     , contents: {type: String}
     , created_at: { type: String, index: { unique: true }, 'default': moment().format('LLLL') }
